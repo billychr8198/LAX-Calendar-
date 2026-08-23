@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0B121C"/>
+  <g transform="translate(6.5 21) scale(0.0135)">
+    <path fill="#00A5CE" fill-rule="evenodd" d="M1678 0 L939 1453 L425 1452 L425 14 L0 14 L0 1840 L1191 1840 L1331 1510 L1960 1510 L2097 1839 L2357 1452 Z M1646 752 L1824 1187 L1464 1188 Z"/>
+    <path fill="#F2F5F8" d="M2098 14 L2696 948 L2098 1839 L2597 1840 L2967 1242 L3333 1840 L3839 1840 L3237 907 L3838 14 L3342 14 L2972 615 L2604 14 Z"/>
+  </g>
+</svg>
