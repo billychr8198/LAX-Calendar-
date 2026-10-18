@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LAX Mission Control — Run the Airport, Run Your Day</title>
+<meta name="description" content="You are the CEO of Los Angeles World Airports. Keep your daily to-do list for 122 days, open 122 real routes, watch them fly on animated maps, and grow LAX into the number one airport in the world.">
+<meta name="theme-color" content="#060B13">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="boot-veil">
+  <img src="assets/img/LAX_blue_logo.webp" alt="LAX — fan made by Billy Christopher">
+  <div class="boot-bar"><i></i></div>
+</div>
+<div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<!-- ============ HEADER ============ -->
+<header class="topbar">
+  <div class="topbar__in">
+    <a class="brand" href="#tower">
+      <img id="brand-logo" src="assets/img/lax-logo-night.png" alt="LAX">
+      <span class="brand__txt">
+        <span class="brand__t1">Mission Control</span>
+        <span class="brand__t2">Los Angeles World Airports · Season 01</span>
+      </span>
+    </a>
+
+    <div class="chips">
+      <button class="chip chip--rank" data-goto="performance" type="button"><span>World</span><b id="hd-rank">—</b></button>
+      <button class="chip chip--pax" data-goto="performance" type="button"><span>Pax/yr</span><b id="hd-pax">0</b></button>
+      <button class="chip chip--pts" data-goto="schedule" type="button"><span>Points</span><b id="hd-pts">0</b></button>
+      <button class="chip chip--route" data-goto="routemap" type="button"><span>Routes</span><b id="hd-routes">0</b></button>
+      <button class="icon-btn" id="sound-toggle" type="button" aria-label="Turn sound off">🔊</button>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch to daylight operations">☀</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" aria-label="Sections">
+  <div class="nav__in" role="tablist">
+    <button class="tab" role="tab" data-go="tower"       aria-selected="true"><span class="tab__ico">🛫</span>Tower</button>
+    <button class="tab" role="tab" data-go="schedule"    aria-selected="false"><span class="tab__ico">🗓</span>Schedule</button>
+    <button class="tab" role="tab" data-go="routemap"    aria-selected="false"><span class="tab__ico">🗺</span>Route Map</button>
+    <button class="tab" role="tab" data-go="performance" aria-selected="false"><span class="tab__ico">📈</span>Performance</button>
+    <button class="tab" role="tab" data-go="network"     aria-selected="false"><span class="tab__ico">🎫</span>Routes</button>
+    <button class="tab" role="tab" data-go="airfield"    aria-selected="false"><span class="tab__ico">🛬</span>Airfield</button>
+    <button class="tab tab--sun" role="tab" data-go="keepflying" aria-selected="false"><span class="tab__ico">☀️</span>Keep Flying</button>
+    <button class="tab" role="tab" data-go="discover"    aria-selected="false"><span class="tab__ico">🌴</span>Discover LA</button>
+    <button class="tab" role="tab" data-go="settings"    aria-selected="false"><span class="tab__ico">⚙</span>Settings</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================= TOWER ================= -->
+<section class="view wrap" id="view-tower" role="tabpanel" aria-label="Mission Control">
+
+  <div class="hero">
+    <div class="hero__slides" id="hero-slides"></div>
+    <div class="hero__shade"></div>
+    <svg class="hero__plane" viewBox="-8 -8 16 16" aria-hidden="true"><path d="M0,-7 L1.6,-2.2 L7,1 L7,2.4 L1.6,0.9 L1.2,4.6 L3,6 L3,7 L0,6.2 L-3,7 L-3,6 L-1.2,4.6 L-1.6,0.9 L-7,2.4 L-7,1 L-1.6,-2.2 Z"/></svg>
+    <div class="hero__body">
+      <p class="eyebrow eyebrow--hero"><span id="season-label">Season 01 · 1 Sep — 31 Dec 2026</span> · <span id="ceo-name">Chief Executive</span></p>
+      <h1 id="hero-title">Make LAX the number one airport in the world</h1>
+      <p class="hero__sub" id="hero-sub"></p>
+      <div class="pylons" id="pylons" aria-hidden="true"></div>
+      <div class="hero__row">
+        <button class="btn btn--go btn--lg" data-goto="schedule" id="hero-cta">Start day one</button>
+        <button class="btn btn--glass" data-goto="routemap">See where you fly</button>
+        <button class="btn btn--glass" data-goto="keepflying">How it works</button>
+      </div>
+    </div>
+    <button class="hero__cap" id="hero-cap" type="button"></button>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="tower-grid">
+    <div class="card card--rank" id="rank-card"></div>
+    <div class="stats stats--tower">
+      <div class="stat stat--gold"><div class="stat__k">Total points</div><div class="stat__v" id="st-pts">0</div><div class="stat__n" id="st-pts-n">of 1,952 possible</div></div>
+      <div class="stat stat--green"><div class="stat__k">Days logged</div><div class="stat__v" id="st-days">0/122</div><div class="stat__n" id="st-days-n">0% of the season</div></div>
+      <div class="stat"><div class="stat__k">Current run</div><div class="stat__v" id="st-streak">0</div><div class="stat__n" id="st-streak-n">best run: 0 days</div></div>
+      <div class="stat stat--mag"><div class="stat__k">Plan revisions</div><div class="stat__v" id="st-rev">0</div><div class="stat__n" id="st-rev-n">−0 points paid</div></div>
+    </div>
+  </div>
+
+  <div class="section-head"><p class="eyebrow">Newest on the board</p></div>
+  <div id="latest-route" class="latest"></div>
+
+  <div class="note-card" id="tower-note">
+    <div class="note-card__k">Note from the tower</div>
+    <p class="note-card__q" id="nudge"></p>
+    <button class="btn btn--sm btn--ghost" data-goto="keepflying" type="button">More encouragement →</button>
+  </div>
+
+  <div class="section-head">
+    <p class="eyebrow">The airport you run</p>
+    <h2>Los Angeles International</h2>
+    <p class="lede">Nine terminals, a Historic-Cultural Monument in the middle of the horseshoe, and fifteen glass pylons that tell you when you have arrived. Every photo is shown whole — tap one to open it full screen, then zoom in as far as you like.</p>
+  </div>
+  <div class="gallery" id="photo-grid"></div>
+</section>
+
+<!-- ================= SCHEDULE ================= -->
+<section class="view wrap" id="view-schedule" role="tabpanel" aria-label="Schedule" hidden>
+  <div class="section-head">
+    <p class="eyebrow">Flight schedule · <span id="sched-count">122</span> days</p>
+    <h2>Your daily board</h2>
+    <p class="lede">File your plan, push back, then tick flights off as the day goes. Plan as freely as you like beforehand — once the day is running, <b>every change to the plan costs 4 points</b>. Log the day and a new route opens, whatever the score.</p>
+  </div>
+
+  <div class="sched-top">
+    <div class="card cal-card">
+      <div class="cal-bar">
+        <div class="cal-bar__nav">
+          <button class="icon-btn" id="cal-prev" type="button" aria-label="Previous month">‹</button>
+          <span class="cal-bar__m" id="cal-month">SEPTEMBER 2026</span>
+          <button class="icon-btn" id="cal-next" type="button" aria-label="Next month">›</button>
+        </div>
+        <div class="cal-bar__acts">
+          <button class="btn btn--sm btn--ghost" id="btn-today" type="button">Today</button>
+          <button class="btn btn--sm btn--ghost" id="btn-fill-month" type="button">Fill month with template</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <p class="cal-sum" id="cal-summary"></p>
+    </div>
+
+    <div class="card day-head" id="day-head">
+      <div class="day-head__date">
+        <div class="day-head__d" id="day-date">—</div>
+        <div class="day-head__i" id="day-idx"></div>
+      </div>
+      <div class="phase" id="day-phase"></div>
+      <p class="day-head__s" id="day-status"></p>
+      <div class="day-head__acts">
+        <button class="btn btn--gold" id="btn-push" type="button">Push back · lock my plan</button>
+        <button class="btn btn--go" id="btn-log" type="button">Log this day</button>
+      </div>
+      <div class="tier-row" id="tier-row"></div>
+    </div>
+  </div>
+
+  <div class="sched-main">
+    <div class="planner-card" id="planner"></div>
+
+    <div class="sched-side">
+      <div class="board">
+        <div class="board__top">
+          <span class="board__title">Departures</span>
+          <span class="board__clock" id="board-clock">00:00</span>
+        </div>
+        <div class="board__head">
+          <span>Flight</span><span>Time block</span><span>Destination</span><span>Status</span><span></span>
+        </div>
+        <div class="board__rows" id="board-rows"></div>
+        <form class="board__add" id="add-form" autocomplete="off">
+          <input id="add-input" type="text" placeholder="Add a task — or type 08.00-09.30 Deep work" aria-label="New task">
+          <div class="hmset" aria-label="Optional time block for the new task">
+            <span class="hmset__l">From</span>
+            <input id="add-fh" type="number" min="0" max="24" placeholder="hh" aria-label="Start hour" inputmode="numeric">
+            <b>:</b>
+            <input id="add-fm" type="number" min="0" max="59" step="5" placeholder="mm" aria-label="Start minute" inputmode="numeric">
+            <span class="hmset__l">To</span>
+            <input id="add-th" type="number" min="0" max="24" placeholder="hh" aria-label="End hour" inputmode="numeric">
+            <b>:</b>
+            <input id="add-tm" type="number" min="0" max="59" step="5" placeholder="mm" aria-label="End minute" inputmode="numeric">
+          </div>
+          <button class="btn btn--sm btn--go" type="submit">Add flight</button>
+        </form>
+      </div>
+
+      <div class="tray" id="tray"></div>
+
+      <div class="quick">
+        <button class="btn btn--sm" id="btn-tpl" type="button">Load my template</button>
+        <button class="btn btn--sm" id="btn-copy" type="button">Copy yesterday</button>
+        <button class="btn btn--sm" id="btn-all-done" type="button">Tick everything</button>
+        <button class="btn btn--sm btn--danger" id="btn-clear" type="button">Clear day</button>
+      </div>
+
+      <div class="card card--pad" id="rev-card"></div>
+      <div class="card card--pad" id="day-route"></div>
+      <div class="card card--pad">
+        <div class="stat__k">Notes for this day</div>
+        <textarea class="note-box" id="day-note" placeholder="How did it go? Anything worth remembering?"></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ROUTE MAP ================= -->
+<section class="view wrap" id="view-routemap" role="tabpanel" aria-label="Route map" hidden>
+  <div class="section-head">
+    <p class="eyebrow">Animated route map</p>
+    <h2>Where your days are taking you</h2>
+    <p class="lede">Every route you open is drawn from LAX to its city, on a world map and a U.S. map. Replay your season to watch the network grow day by day, or tap any city to fly it.</p>
+  </div>
+  <div id="routemap"></div>
+</section>
+
+<!-- ================= PERFORMANCE ================= -->
+<section class="view wrap" id="view-performance" role="tabpanel" aria-label="Airport performance" hidden>
+  <div class="section-head">
+    <p class="eyebrow">Airport performance report</p>
+    <h2>How LAX is doing under you</h2>
+    <p class="lede">Five indicators, recomputed from every day you log. They start tiny — LAX on a skeleton schedule — and only reach world-beating levels if you keep showing up and keep your plans. All figures are annualised run-rates.</p>
+  </div>
+  <div id="perf"></div>
+</section>
+
+<!-- ================= NETWORK ================= -->
+<section class="view wrap" id="view-network" role="tabpanel" aria-label="Route network" hidden>
+  <div class="section-head">
+    <p class="eyebrow">Boarding passes</p>
+    <h2>Every route you have opened</h2>
+    <p class="lede">Every logged day opens the next route on the list, starting with the small seasonal runs and building to the busiest flights on earth. All 122 are real routes flown by real airlines. Tap a logo to see it full size, or a pass to fly it on the map.</p>
+  </div>
+
+  <div class="card card--pad net-head">
+    <div class="net-head__row">
+      <span class="net-head__n" id="net-count">0 of 122 routes open</span>
+      <span class="net-head__s" id="net-split">0 international · 0 domestic</span>
+    </div>
+    <div class="meter"><div class="meter__fill" id="net-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="filters">
+    <button class="filt" data-f="all"    type="button" aria-pressed="true">All</button>
+    <button class="filt" data-f="intl"   type="button" aria-pressed="false">International</button>
+    <button class="filt" data-f="dom"    type="button" aria-pressed="false">Domestic</button>
+    <button class="filt" data-f="locked" type="button" aria-pressed="false">Still sealed</button>
+  </div>
+
+  <div class="route-grid" id="route-grid"></div>
+</section>
+
+<!-- ================= AIRFIELD ================= -->
+<section class="view wrap" id="view-airfield" role="tabpanel" aria-label="Airfield map" hidden>
+  <div class="section-head">
+    <p class="eyebrow">Airport diagram</p>
+    <h2>Walk the airfield</h2>
+    <p class="lede">The real LAX layout. Drag to move around, scroll or pinch to zoom, and tap any marker to see what happens in that building — including which of your routes depart from it.</p>
+  </div>
+
+  <div class="map-shell">
+    <div>
+      <div class="map-stage" id="map-stage">
+        <div class="map-pan" id="map-pan">
+          <img src="assets/img/lax-map.jpg" alt="Map of Los Angeles International Airport showing all terminals and gates" draggable="false">
+        </div>
+        <div class="map-hint">Drag · scroll · pinch</div>
+        <div class="map-ctrls">
+          <button id="map-out" type="button" aria-label="Zoom out">−</button>
+          <button id="map-reset" type="button" aria-label="Reset the view">⟲</button>
+          <button id="map-in" type="button" aria-label="Zoom in">+</button>
+          <button id="map-full" type="button" aria-label="Open the diagram full screen">⤢</button>
+        </div>
+      </div>
+      <div class="term-list" id="term-list"></div>
+    </div>
+    <div class="card card--pad" id="term-info"></div>
+  </div>
+</section>
+
+<!-- ================= KEEP FLYING ================= -->
+<section class="view wrap" id="view-keepflying" role="tabpanel" aria-label="Keep Flying" hidden>
+
+  <div class="sun-hero">
+    <div class="sun-hero__sun" aria-hidden="true"></div>
+    <div class="sun-hero__clouds" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="sun-hero__body">
+      <p class="eyebrow eyebrow--hero">Keep flying · whatever the weather</p>
+      <h2 class="sun-hero__q" id="aff-q">Turbulence is temporary. The flight plan is not.</h2>
+      <p class="sun-hero__s" id="aff-s"></p>
+      <div class="hero__row">
+        <button class="btn btn--gold" id="aff-next" type="button">Another one ☀️</button>
+        <button class="btn btn--glass" data-goto="schedule" type="button">Back to my board</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="comeback" id="comeback"></div>
+
+  <div class="section-head">
+    <p class="eyebrow">The pilot's creed</p>
+    <h2>Five habits that win seasons</h2>
+  </div>
+  <div class="creed" id="creed"></div>
+
+  <div class="section-head">
+    <p class="eyebrow">How the game works</p>
+    <h2>Your briefing, Chief Executive</h2>
+    <p class="lede">You have just been made the boss of Los Angeles World Airports. LAX is running a skeleton schedule — a few regional hops a day. Your job is to turn it into the busiest airport on earth, and the only way to do it is by looking after your own days first.</p>
+  </div>
+
+  <div class="phases">
+    <div class="phase-card"><span class="phase-card__n">1</span><h3>📝 File the plan</h3><p>Write your tasks on the board and drag them onto the 24-hour planner. Before the day runs, editing is <b>free</b> — move, resize, rename, delete as much as you like.</p></div>
+    <div class="phase-card"><span class="phase-card__n">2</span><h3>🛫 Push back</h3><p>Press <b>Push back</b> to lock the plan, or simply tick your first task. The day is now <b>in operation</b>.</p></div>
+    <div class="phase-card phase-card--warn"><span class="phase-card__n">3</span><h3>⚠️ Revisions cost 4</h3><p>While the day is running, every change to the plan — adding, deleting, renaming or re-timing a task — costs <b>4 points</b> and dents reliability. Ticking tasks off is always free.</p></div>
+    <div class="phase-card"><span class="phase-card__n">4</span><h3>✅ Log the day</h3><p>Log it at the end of the day. Points are scored, the indicators update, and a <b>new route opens no matter how the day went</b>.</p></div>
+  </div>
+
+  <div class="card card--pad" style="margin-bottom:16px">
+    <h3>How points work</h3>
+    <p class="muted">You do not need a perfect day to score. You just need to get past half.</p>
+    <div class="tier-row tier-row--static">
+      <div class="tier-card hit"><div class="tier-card__t">Half your list</div><div class="tier-card__p">4 pts</div><div class="tier-card__n">50% or more done</div></div>
+      <div class="tier-card hit"><div class="tier-card__t">Most of your list</div><div class="tier-card__p">8 pts</div><div class="tier-card__n">75% or more done</div></div>
+      <div class="tier-card next"><div class="tier-card__t">The whole list</div><div class="tier-card__p">16 pts</div><div class="tier-card__n">100% done</div></div>
+      <div class="tier-card pen"><div class="tier-card__t">Each revision</div><div class="tier-card__p">−4 pts</div><div class="tier-card__n">change after push back</div></div>
+    </div>
+    <p class="muted">122 days × 16 points = <b>1,952 points</b> for a perfect season. A day's score is its tier minus 4 per revision, so it can dip below zero — that is the price of changing course mid-flight, and it is meant to sting a little.</p>
+  </div>
+
+  <div class="card card--pad maths" id="maths"></div>
+
+  <div class="pill-note" style="margin:18px 0 26px">
+    <b>What if I miss a day, or have a bad one?</b><br>
+    Nothing is lost. A logged day with nothing ticked still opens its route and keeps your season moving. A gap between logged days counts as a day of zero quality for reliability — it dips by about 5%, and three good days put it back. You can always go back and fill in a past day.
+  </div>
+
+  <div class="section-head">
+    <p class="eyebrow">A word from Los Angeles</p>
+    <h2>Five people worth listening to</h2>
+    <p class="lede">On the days when the list feels heavy, put one of these on. They are all voices from this city, and none of them got where they were going in a straight line. Nothing loads until you press play.</p>
+  </div>
+  <div class="vid-grid" id="vid-guide"></div>
+</section>
+
+<!-- ================= DISCOVER LA ================= -->
+<section class="view wrap" id="view-discover" role="tabpanel" aria-label="Discover Los Angeles" hidden>
+  <div class="section-head">
+    <p class="eyebrow">Beyond the terminal</p>
+    <h2>Discover Los Angeles</h2>
+    <p class="lede">Around 74 million people passed through LAX in 2025, and a lot of them only ever saw the inside of it. Here is what is waiting outside the doors.</p>
+  </div>
+
+  <div class="card card--pad" style="margin-bottom:16px">
+    <h3>What makes this city different</h3>
+    <p class="muted big">
+      Los Angeles is not really one city. It is dozens of neighbourhoods that grew until they touched, spread
+      across a basin between the mountains and the Pacific. That is why nobody agrees on what LA "is" —
+      Santa Monica and Boyle Heights and Pasadena feel like different countries, and all three are twenty
+      minutes from somewhere completely unlike them.
+    </p>
+    <p class="muted big">
+      A few things everyone gets right: you can surf and see snow on the same day. More than 200 languages are
+      spoken here. The food is the best argument for the place — tacos, Korean barbecue, Thai Town, Persian
+      Westwood, Oaxacan Koreatown. And the light in the late afternoon really is like that.
+    </p>
+  </div>
+
+  <div class="stats" style="margin-bottom:22px">
+    <div class="stat"><div class="stat__k">City founded</div><div class="stat__v">1781</div><div class="stat__n">as El Pueblo de Los Ángeles</div></div>
+    <div class="stat stat--gold"><div class="stat__k">Sunny days</div><div class="stat__v">~284</div><div class="stat__n">per year, on average</div></div>
+    <div class="stat stat--mag"><div class="stat__k">Languages</div><div class="stat__v">200+</div><div class="stat__n">spoken across the county</div></div>
+    <div class="stat stat--green"><div class="stat__k">Coastline</div><div class="stat__v">75 mi</div><div class="stat__n">of county beaches</div></div>
+  </div>
+
+  <div class="section-head">
+    <p class="eyebrow">Seven guides</p>
+    <h2>Where to actually go</h2>
+    <p class="lede">Start with the first if you have never been, then work down. Nothing loads until you press play.</p>
+  </div>
+  <div class="vid-grid" id="vid-la" style="margin-bottom:26px"></div>
+
+  <div class="card card--pad">
+    <h3>Straight off the plane</h3>
+    <p class="muted big">
+      <b>South of the airport:</b> Manhattan Beach and Hermosa Beach are ten minutes away — the closest real
+      beach towns to the terminal.<br>
+      <b>North:</b> Venice and Santa Monica, twenty minutes up Lincoln Boulevard. Boardwalk, pier, and the
+      end of Route 66.<br>
+      <b>East:</b> Downtown LA, Koreatown and the museums along Wilshire. The Metro C and K lines connect to
+      the airport people mover.<br>
+      <b>If you only have a couple of hours:</b> stay in the terminal and look at the Theme Building from the
+      window. It has been standing there since 1961 and it still looks like the future.
+    </p>
+  </div>
+</section>
+
+<!-- ================= SETTINGS ================= -->
+<section class="view wrap" id="view-settings" role="tabpanel" aria-label="Settings" hidden>
+  <div class="section-head">
+    <p class="eyebrow">Controls</p>
+    <h2>Settings</h2>
+    <p class="lede">Everything here saves the moment you change it.</p>
+  </div>
+
+  <div class="card card--pad" style="margin-bottom:16px">
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Your name</div>
+        <div class="set-row__d">Shown on the Tower screen. Leave it blank to stay "Chief Executive".</div>
+      </div>
+      <input class="field" id="set-name" type="text" maxlength="40" placeholder="e.g. Billy Christopher" aria-label="Your name">
+    </div>
+
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Season start</div>
+        <div class="set-row__d">The season always runs 122 days. Started late? Move the first day to today and the whole calendar shifts with it. Days you already filled in keep their tasks — they just fall outside the season if you move past them.</div>
+      </div>
+      <input class="field" id="set-start" type="date" aria-label="Season start date">
+    </div>
+
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Look</div>
+        <div class="set-row__d">Night operations is the dark board. Daylight operations is the bright one.</div>
+      </div>
+      <div class="seg" id="set-theme">
+        <button type="button" data-v="night" aria-pressed="true">Night ops</button>
+        <button type="button" data-v="day" aria-pressed="false">Daylight ops</button>
+      </div>
+    </div>
+
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Ask before charging a revision</div>
+        <div class="set-row__d">On, you confirm every paid change while a day is running. Off, the 4 points are taken straight away (you still get a notice).</div>
+      </div>
+      <button class="switch" id="set-ask" role="switch" aria-checked="true" aria-label="Ask before charging a revision"></button>
+    </div>
+
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Sound</div>
+        <div class="set-row__d">Chimes when you tick a task, push back, log a day or open a route.</div>
+      </div>
+      <button class="switch" id="set-sound" role="switch" aria-checked="true" aria-label="Sound"></button>
+    </div>
+
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Animation</div>
+        <div class="set-row__d">Turn this off for a calmer, still page — planes stop flying and the hero stops moving. Your device's own reduced-motion setting is respected either way.</div>
+      </div>
+      <button class="switch" id="set-motion" role="switch" aria-checked="true" aria-label="Animation"></button>
+    </div>
+
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Real video thumbnails</div>
+        <div class="set-row__d">On, each video shows its own picture, loaded from YouTube's image server (no cookies). Off, LAX photographs are shown instead and nothing is contacted until you press play.</div>
+      </div>
+      <button class="switch" id="set-ytthumbs" role="switch" aria-checked="true" aria-label="Real video thumbnails"></button>
+    </div>
+  </div>
+
+  <div class="card card--pad" style="margin-bottom:16px">
+    <div class="set-row" style="border-bottom:0;padding-bottom:6px">
+      <div class="set-row__l">
+        <div class="set-row__t">Your daily template</div>
+        <div class="set-row__d">One task per line. This is what "Load my template" and "Fill month with template" put on a day. Start a line with <code>08.00-09.30</code> to give it a time block; blocks can run up to <code>24.00</code>.</div>
+      </div>
+    </div>
+    <textarea class="field" id="set-tasks" spellcheck="false" aria-label="Your daily template, one task per line"></textarea>
+    <div class="preset-row" id="set-preset">
+      <span>Start from</span>
+      <button class="btn btn--sm" type="button" data-tpl="ops">Daily Ops</button>
+      <button class="btn btn--sm" type="button" data-tpl="ceo">Executive Turnaround</button>
+      <button class="btn btn--sm" type="button" data-tpl="light">Gentle Day</button>
+    </div>
+  </div>
+
+  <div class="card card--pad" style="margin-bottom:16px">
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Save your progress to a file</div>
+        <div class="set-row__d">Downloads everything as a small file you can keep, or move to another device or browser.</div>
+      </div>
+      <button class="btn" id="set-export" type="button">Download progress</button>
+    </div>
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Load progress from a file</div>
+        <div class="set-row__d">Replaces what is on this device with the file you choose. Files from the older version load too.</div>
+      </div>
+      <label class="btn" style="margin:0">
+        Choose a file
+        <input id="set-import" type="file" accept="application/json,.json" class="sr">
+      </label>
+    </div>
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Replay the last route opening</div>
+        <div class="set-row__d">Shows the boarding pass for the most recent route you opened.</div>
+      </div>
+      <button class="btn" id="set-replay" type="button">Replay</button>
+    </div>
+    <div class="set-row">
+      <div class="set-row__l">
+        <div class="set-row__t">Start the season over</div>
+        <div class="set-row__d">Erases every logged day, every point and every route. It asks twice, and there is no undo.</div>
+      </div>
+      <button class="btn btn--danger" id="set-reset" type="button">Reset everything</button>
+    </div>
+  </div>
+
+  <div class="card card--pad">
+    <div class="stat__k">Where your progress lives</div>
+    <p class="muted">
+      Saved to <b id="set-where">localStorage</b> in this browser, on this device only. Nothing is sent
+      anywhere and there is no account. Clearing your browser data will clear this too, so download a copy
+      if the season matters to you.
+    </p>
+    <p class="mono-note" id="set-stats"></p>
+  </div>
+</section>
+
+<footer class="foot wrap">
+  <button class="foot__logo" type="button" id="foot-logo" aria-label="View the LAX fan logo full size"><img src="assets/img/LAX_blue_logo.webp" alt="LAX — fan made by Billy Christopher" loading="lazy"></button>
+  <div>
+    <p style="margin:0">
+      <b class="foot__t">LAX Mission Control</b> — a personal to-do calendar, played as an airport.
+    </p>
+    <p style="margin:8px 0 0">
+      A fan project. Not affiliated with, endorsed by, or connected to Los Angeles World Airports or
+      Los Angeles International Airport. Airline names and logos belong to their respective owners and appear
+      here to identify real routes. World traffic figures: ACI World, 2025. Map data: Natural Earth via
+      world-atlas and us-atlas. Maps drawn with D3.
+    </p>
+  </div>
+</footer>
+
+</main>
+
+<!-- ============ OVERLAYS ============ -->
+<div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-label="Dialog">
+  <div class="modal__scrim" id="modal-scrim"></div>
+  <div class="modal__card" id="modal-card">
+    <button class="modal__x" id="modal-x" type="button" aria-label="Close">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div class="takeoff" id="takeoff" aria-hidden="true"><svg viewBox="-8 -8 16 16"><path d="M0,-7 L1.6,-2.2 L7,1 L7,2.4 L1.6,0.9 L1.2,4.6 L3,6 L3,7 L0,6.2 L-3,7 L-3,6 L-1.2,4.6 L-1.6,0.9 L-7,2.4 L-7,1 L-1.6,-2.2 Z"/></svg></div>
+
+<script src="assets/vendor/d3.v7.9.0.min.js"></script>
+<script src="assets/vendor/topojson-client.v3.1.0.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/sim.js"></script>
+<script src="assets/js/viewer.js"></script>
+<script src="assets/js/planner.js"></script>
+<script src="assets/js/maps.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
