@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// LAX Mission Control — Cloud Firestore security rules.
+// Paste this whole file into Firebase console → Firestore Database → Rules → Publish.
+//
+// Each player can read and write only their own documents:
+//   users/{uid}               profile + the devices they have signed in on
+//   users/{uid}/game/season   their saved season (one JSON string)
+// Everything else is closed.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedInAs(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      allow read, delete: if signedInAs(uid);
+      allow create, update: if signedInAs(uid)
+        && request.resource.data.keys().hasOnly(['name', 'email', 'devices', 'updatedAt'])
+        && (!('devices' in request.resource.data) || request.resource.data.devices.size() <= 40)
+        && (!('name' in request.resource.data) || request.resource.data.name.size() <= 80);
+
+      match /game/{gameId} {
+        allow read, delete: if signedInAs(uid);
+        allow create, update: if signedInAs(uid)
+          && gameId == 'season'
+          && request.resource.data.keys().hasOnly(['state', 'rev', 'updatedAt', 'updatedBy', 'deviceLabel', 'summary', 'schema'])
+          && request.resource.data.state is string
+          && request.resource.data.state.size() < 900000
+          && request.resource.data.updatedAt == request.time;
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
