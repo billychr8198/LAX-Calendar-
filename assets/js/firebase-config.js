@@ -16,12 +16,13 @@
    the rules in firestore.rules, not by hiding this file.
    ============================================================= */
 window.LAX_FIREBASE_CONFIG = {
-  apiKey: "PASTE-YOUR-API-KEY-HERE",
-  authDomain: "your-project-id.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.firebasestorage.app",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000000000"
+  apiKey: "AIzaSyBwAkFyB1KQzheg4XcoKaL4J5TNIVwP7mg",
+  authDomain: "los-angeles-cd047.firebaseapp.com",
+  projectId: "los-angeles-cd047",
+  storageBucket: "los-angeles-cd047.firebasestorage.app",
+  messagingSenderId: "179900264383",
+  appId: "1:179900264383:web:0a243e28e0910af9fdfb0a",
+  measurementId: "G-3VQLYHFE4L"
 };
 
 window.LAX_CLOUD_OPTIONS = {
