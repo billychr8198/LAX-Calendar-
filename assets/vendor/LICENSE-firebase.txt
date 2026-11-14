@@ -1,0 +1,16 @@
+assets/vendor/firebase-lax.v13.1.0.js is a bundle of the Firebase JavaScript SDK v13.1.0
+(packages firebase/app, firebase/auth and firebase/firestore), built with esbuild from
+the npm package "firebase". Copyright Google LLC.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+file except in compliance with the License. You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+
+The bundle's entry file (the small wrapper that exposes window.LAX_FIREBASE) is part of
+LAX Mission Control.
